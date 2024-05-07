@@ -10,6 +10,7 @@ export default function EditForm(props) {
     name: "",
     code: "",
     brand: "",
+    location: "",
     made_in: "",
   });
 
@@ -24,6 +25,7 @@ export default function EditForm(props) {
     dataAdd.append("name", data.name);
     dataAdd.append("code", data.code);
     dataAdd.append("brand", data.brand);
+    dataAdd.append("location", data.location);
     dataAdd.append("made_in", data.made_in);
     dataAdd.append("input_by", user_id);
     dataAdd.append("company_id", company_id);
@@ -38,6 +40,7 @@ export default function EditForm(props) {
       name: "",
       code: "",
       brand: "",
+      location: "",
       made_in: "",
     });
     props.setOpen(false);
@@ -49,6 +52,7 @@ export default function EditForm(props) {
       name: props.item.name,
       code: props.item.code,
       brand: props.item.brand,
+      location: props.item.location,
       made_in: props.item.made_in,
     });
   }, [props.item]);
@@ -159,6 +163,26 @@ export default function EditForm(props) {
                   });
                 }}
               />
+            </div>
+
+            <div className="mb-3">
+              <Select
+                required
+                color="indigo"
+                label="Location"
+                value={data.location}
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    location: e.target.value,
+                  });
+                }}
+              >
+                <Option value="">Select Location</Option>
+                <Option value="location1">Rak A</Option>
+                <Option value="location2">Rak B</Option>
+                <Option value="location3">Rak C</Option>
+              </Select>
             </div>
 
             <div className="">
