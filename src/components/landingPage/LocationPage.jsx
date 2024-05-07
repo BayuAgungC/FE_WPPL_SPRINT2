@@ -10,7 +10,7 @@ const LocationPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Fetch items data from API
+
     const fetchItems = async () => {
       try {
         const response = await axios.get(ENDPOINTS.GET.ITEMS.LIST);
@@ -21,7 +21,7 @@ const LocationPage = () => {
       }
     };
 
-    // Fetch locations data from API
+
     const fetchLocations = async () => {
       try {
         const response = await axios.get(ENDPOINTS.GET.LOCATIONS);
@@ -35,7 +35,7 @@ const LocationPage = () => {
     fetchLocations();
   }, []);
 
-  // Handle location filter change
+
   const handleLocationFilterChange = (e) => {
     setSelectedLocation(e.target.value);
     if (e.target.value === "") {
@@ -46,12 +46,12 @@ const LocationPage = () => {
     }
   };
 
-  // Handle search input change
+
   const handleSearchInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filter items based on search term
+
   useEffect(() => {
     const filtered = items.filter((item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -63,7 +63,7 @@ const LocationPage = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold my-4">Items by Location</h1>
 
-      {/* Search Form */}
+
       <div className="w-full flex flex-col">
         <form
           className="relative flex w-full flex-wrap items-stretch mb-4"
@@ -95,7 +95,7 @@ const LocationPage = () => {
         </form>
       </div>
 
-      {/* Location Filter */}
+
       <div className="mb-4 flex items-center">
         <label htmlFor="locationFilter" className="mr-2">
           Filter by Location:
@@ -115,7 +115,6 @@ const LocationPage = () => {
         </select>
       </div>
 
-      {/* Item Table */}
       <div className="w-full overflow-auto shadow">
         <table className="min-w-max w-full text-center">
           <thead>
