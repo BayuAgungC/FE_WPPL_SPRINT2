@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const HelpPage = () => {
-  // State untuk menyimpan status tampilan jawaban
+
   const [showAnswer, setShowAnswer] = useState({
     whatIsThisWebsite: false,
     howToAddItem: false,
@@ -9,7 +9,7 @@ const HelpPage = () => {
     whoToContact: false,
   });
 
-  // Fungsi untuk menampilkan atau menyembunyikan jawaban
+
   const toggleAnswer = (question) => {
     setShowAnswer({
       ...showAnswer,
