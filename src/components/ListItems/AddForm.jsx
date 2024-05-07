@@ -10,7 +10,7 @@ export default function AddForm(props) {
     code: "",
     brand: "",
     made_in: "",
-    location: "", // Menambahkan location ke dalam state
+    location: "", 
   });
 
   const user_id = Cookies.get("user_id");
@@ -24,7 +24,7 @@ export default function AddForm(props) {
     dataAdd.append("code", data.code);
     dataAdd.append("brand", data.brand);
     dataAdd.append("made_in", data.made_in);
-    dataAdd.append("location", data.location); // Mengirimkan location dalam data
+    dataAdd.append("location", data.location);
     dataAdd.append("input_by", user_id);
     dataAdd.append("input_date", currentDate);
     dataAdd.append("company_id", company_id);
@@ -40,7 +40,7 @@ export default function AddForm(props) {
       code: "",
       brand: "",
       made_in: "",
-      location: "", // Mengosongkan location setelah data terkirim
+      location: "", 
     });
   };
 
@@ -164,7 +164,6 @@ export default function AddForm(props) {
                 }}
               >
                 <Option value="">Select Location</Option>
-                {/* Render your location options here */}
                 <Option value="location1">Rak A</Option>
                 <Option value="location2">Rak B</Option>
                 <Option value="location3">Rak C</Option>
