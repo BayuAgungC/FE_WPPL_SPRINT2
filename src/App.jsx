@@ -7,6 +7,9 @@ import Dashboard from "./components/landingPage/Dashboard";
 import BarangMasuk from "./components/landingPage/BarangMasuk";
 import BarangKeluar from "./components/landingPage/BarangKeluar";
 import ItemsList from './components/ListItems/ItemsList';
+import LocationPage from "./components/landingPage/LocationPage";
+import HelpPage  from './components/landingPage/HelpPage';
+
 
 function App() {
 
@@ -20,6 +23,8 @@ function App() {
             <Route path='/received' element={ <BarangMasuk />} />
             <Route path='/issued' element={<BarangKeluar />} />
             <Route path='/items' element={<ItemsList />} />
+            <Route path='/LocationPage' element={<LocationPage />} />
+            <Route path='/HelpPage' element={<HelpPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

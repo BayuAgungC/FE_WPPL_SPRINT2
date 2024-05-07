@@ -116,6 +116,7 @@ export default function ItemsList() {
                   <th className="px-6 py-3">Name</th>
                   <th className="px-6 py-3">Code</th>
                   <th className="px-6 py-3">Brand</th>
+                  <th className="px-6 py-3">Location</th>
                   <th className="px-6 py-3">Made In</th>
                   <th className="px-6 py-3">Input Date</th>
                   <th className="px-6 py-3">Input By</th>
@@ -136,6 +137,7 @@ export default function ItemsList() {
                           <td className="px-6 py-3">{items.NAME}</td>
                           <td className="px-6 py-3">{items.CODE}</td>
                           <td className="px-6 py-3">{items.BRAND}</td>
+                          <td className="px-6 py-3">{items.LOCATION}</td>
                           <td className="px-6 py-3">{items.MADE_IN}</td>
                           <td className="px-6 py-3">{items.INPUT_DATE}</td>
                           <td className="px-6 py-3">{items.INPUT_BY}</td>
