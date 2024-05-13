@@ -1,83 +1,58 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ENDPOINTS from "../../.config/.conf";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { Dialog, Option, Select, Input } from "@material-tailwind/react";
 
-const LocationPage = () => {
-  const [items, setItems] = useState([]);
-  const [locations, setLocations] = useState([]);
+export default function Dashboard() {
+  const [data, setData] = useState([]);
+  const [limit, setLimit] = useState(20);
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+
+  const user_id = Cookies.get("user_id");
+  const company_id = Cookies.get("company_id");
+  const auth = Cookies.get("auth");
+
+  const getData = async () => {
+    const result = await axios.get(
+      `${ENDPOINTS.GET.ITEMS.RECEIVE}/${user_id}/${company_id}`
+    );
+    setData(result.data);
+  };
 
   useEffect(() => {
+    getData();
 
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get(ENDPOINTS.GET.ITEMS.LIST);
-        setItems(response.data);
-        setFilteredItems(response.data);
-      } catch (error) {
-        console.error("Error fetching items:", error);
-      }
-    };
-
-
-    const fetchLocations = async () => {
-      try {
-        const response = await axios.get(ENDPOINTS.GET.LOCATIONS);
-        setLocations(response.data);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
-    fetchItems();
-    fetchLocations();
+    if (!auth) {
+      navigate("/login");
+    }
   }, []);
 
-
-  const handleLocationFilterChange = (e) => {
-    setSelectedLocation(e.target.value);
-    if (e.target.value === "") {
-      setFilteredItems(items);
-    } else {
-      const filtered = items.filter((item) => item.location === e.target.value);
-      setFilteredItems(filtered);
-    }
-  };
-
-
-  const handleSearchInputChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-
-  useEffect(() => {
-    const filtered = items.filter((item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredItems(filtered);
-  }, [searchTerm, items]);
+  // Filter data by location
+  const filteredData = selectedLocation
+    ? data.filter((item) => item.LOCATION === selectedLocation)
+    : data;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold my-4">Items by Location</h1>
-
-
+    <div className="flex flex-col gap-8 w-full h-screen">
       <div className="w-full flex flex-col">
+        <h1 className="font-extrabold p-2 text-sm lg:text-lg ">Item Location</h1>
         <form
-          className="relative flex w-full flex-wrap items-stretch mb-4"
+          className="relative flex w-full flex-wrap items-stretch"
           onSubmit={(e) => {
             e.preventDefault();
+            //   hasilFilter();
           }}
         >
           <input
             type="search"
-            className="relative m-0 block min-w-0 flex-auto rounded border border-solid border-gray-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
+            className="relative m-0 block min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
             placeholder="Search"
             aria-label="Search"
             aria-describedby="button-addon2"
-            onChange={handleSearchInputChange}
+            onChange={(e) => {
+              // setSearch(e.target.value);
+            }}
           />
           <button
             type="submit"
@@ -93,67 +68,52 @@ const LocationPage = () => {
             </svg>
           </button>
         </form>
+        <div className="mt-4">
+          <Select
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+            color="lightBlue"
+            size="regular"
+            outline={true}
+            placeholder="Filter by Location"
+          >
+            <Option value="">All Locations</Option>
+            {/* Assuming you have a list of locations */}
+            <Option value="Location1">Rak A</Option>
+            <Option value="Location2">Rak B</Option>
+            <Option value="Location3">Rak C</Option>
+            {/* Add more options as needed */}
+          </Select>
+        </div>
       </div>
-
-
-      <div className="mb-4 flex items-center">
-        <label htmlFor="locationFilter" className="mr-2">
-          Filter by Location:
-        </label>
-        <select
-          id="locationFilter"
-          value={selectedLocation}
-          onChange={handleLocationFilterChange}
-          className="border border-gray-300 rounded-md px-2 py-1"
-        >
-          <option value="">All Locations</option>
-          {locations.map((location) => (
-            <option key={location.id} value={location.name}>
-              {location.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <div className="w-full overflow-auto shadow">
         <table className="min-w-max w-full text-center">
           <thead>
             <tr className="border-b border-b-gray-200 text-xs font-semibold bg-gray-50">
-              <th className="px-6 py-3 ">No</th>
-              <th className="px-6 py-3 ">Name</th>
-              <th className="px-6 py-3 ">Brand</th>
-              <th className="px-6 py-3 ">Code</th>
-              <th className="px-6 py-3 ">Location</th>
+              <th className="px-6 py-3">No</th>
+              <th className="px-6 py-3">Name</th>
+              <th className="px-6 py-3">Brand</th>
+              <th className="px-6 py-3">Code</th>
+              <th className="px-6 py-3">Location</th>
             </tr>
           </thead>
           <tbody>
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item, index) => {
-                return (
-                  <tr
-                    key={index}
-                    className="border-b border-b-gray-200 text-sm hover:bg-gray-400/10"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.brand}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.code}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.location}</td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center py-4">
-                  No items found.
-                </td>
-              </tr>
-            )}
+            {filteredData.length > 0 &&
+              filteredData.slice(0, limit).map((item, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-b-gray-200 text-sm hover:bg-gray-400/10"
+                >
+                  <td className="px-6 py-3">{index + 1}</td>
+                  <td className="px-6 py-3">{item.NAME}</td>
+                  <td className="px-6 py-3">{item.BRAND}</td>
+                  <td className="px-6 py-3">{item.CODE}</td>
+                  <td className="px-6 py-3">{item.LOCATION}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
     </div>
   );
-};
-
-export default LocationPage;
+}
